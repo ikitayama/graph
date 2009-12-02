@@ -28,7 +28,7 @@ ryppl_test_run(generator_test)
 ryppl_test_run(graph)
 ryppl_test_compile(graph_concepts)
 ryppl_test_run(graphviz_test 
-  DEPENDS ryppl_test_exec_monitor ryppl_graph STATIC)
+  DEPENDS boost_test_exec_monitor ryppl_graph STATIC)
 ryppl_test_run(gursoy_atun_layout_test)
 ryppl_test_run(layout_test)
 ryppl_test_run(serialize DEPENDS ryppl_serialization)
