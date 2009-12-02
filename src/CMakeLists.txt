@@ -23,7 +23,7 @@ if (EXPAT_FOUND)
   list(APPEND BOOST_GRAPH_OPTIONAL_LIBRARIES ${EXPAT_LIBRARIES})
 endif (EXPAT_FOUND)
 
-boost_add_library(graph
+ryppl_add_library(boost_graph
 
   read_graphviz_new.cpp
   ${BOOST_GRAPH_OPTIONAL_SOURCES}
