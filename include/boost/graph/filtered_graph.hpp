@@ -13,6 +13,7 @@
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/properties.hpp>
 #include <boost/graph/adjacency_iterator.hpp>
+#include <boost/graph/detail/set_adaptor.hpp>
 #include <boost/iterator/filter_iterator.hpp>
 
 namespace boost {
@@ -192,8 +193,6 @@ namespace boost {
     > edge_iterator;
     typedef typename Traits::edges_size_type           edges_size_type;
 
-    typedef typename ::boost::edge_property_type<Graph>::type   edge_property_type;
-    typedef typename ::boost::vertex_property_type<Graph>::type vertex_property_type;
     typedef filtered_graph_tag graph_tag;
 
 #ifndef BOOST_GRAPH_NO_BUNDLED_PROPERTIES
@@ -218,6 +217,22 @@ namespace boost {
     EdgePredicate m_edge_pred;
     VertexPredicate m_vertex_pred;
   };
+
+  // Do not instantiate these unless needed
+  template <typename Graph, 
+            typename EdgePredicate,
+            typename VertexPredicate>
+  struct vertex_property_type<filtered_graph<Graph, EdgePredicate, VertexPredicate> > {
+    typedef typename vertex_property_type<Graph>::type type;
+  };
+
+  template <typename Graph, 
+            typename EdgePredicate,
+            typename VertexPredicate>
+  struct edge_property_type<filtered_graph<Graph, EdgePredicate, VertexPredicate> > {
+    typedef typename edge_property_type<Graph>::type type;
+  };
+
 
 #ifndef BOOST_GRAPH_NO_BUNDLED_PROPERTIES
   template<typename Graph, typename EdgePredicate, typename VertexPredicate>
@@ -264,7 +279,7 @@ namespace boost {
   {
     typedef filtered_graph<G, EP, VP> Graph;    
     typename graph_traits<G>::vertex_iterator f, l;
-    tie(f, l) = vertices(g.m_g);
+    boost::tie(f, l) = vertices(g.m_g);
     typedef typename Graph::vertex_iterator iter;
     return std::make_pair(iter(g.m_vertex_pred, f, l), 
                           iter(g.m_vertex_pred, l, l));
@@ -278,7 +293,7 @@ namespace boost {
     typedef filtered_graph<G, EP, VP> Graph;
     typename Graph::EdgePred pred(g.m_edge_pred, g.m_vertex_pred, g);
     typename graph_traits<G>::edge_iterator f, l;
-    tie(f, l) = edges(g.m_g);
+    boost::tie(f, l) = edges(g.m_g);
     typedef typename Graph::edge_iterator iter;
     return std::make_pair(iter(pred, f, l), iter(pred, l, l));
   }
@@ -293,7 +308,7 @@ namespace boost {
   //
   // However, the current solution is still unsatisfactory because
   // the following semantic constraints no longer hold:
-  // tie(vi, viend) = vertices(g);
+  // boost::tie(vi, viend) = vertices(g);
   // assert(std::distance(vi, viend) == num_vertices(g));
 
   template <typename G, typename EP, typename VP>  
@@ -334,7 +349,7 @@ namespace boost {
     typename Graph::OutEdgePred pred(g.m_edge_pred, g.m_vertex_pred, g);
     typedef typename Graph::out_edge_iterator iter;
     typename graph_traits<G>::out_edge_iterator f, l;
-    tie(f, l) = out_edges(u, g.m_g);
+    boost::tie(f, l) = out_edges(u, g.m_g);
     return std::make_pair(iter(pred, f, l), iter(pred, l, l));
   }
 
@@ -345,7 +360,7 @@ namespace boost {
   {
     typename filtered_graph<G, EP, VP>::degree_size_type n = 0;
     typename filtered_graph<G, EP, VP>::out_edge_iterator f, l;
-    for (tie(f, l) = out_edges(u, g); f != l; ++f)
+    for (boost::tie(f, l) = out_edges(u, g); f != l; ++f)
       ++n;
     return n;
   }
@@ -359,7 +374,7 @@ namespace boost {
     typedef filtered_graph<G, EP, VP> Graph;
     typedef typename Graph::adjacency_iterator adjacency_iterator;
     typename Graph::out_edge_iterator f, l;
-    tie(f, l) = out_edges(u, g);
+    boost::tie(f, l) = out_edges(u, g);
     return std::make_pair(adjacency_iterator(f, const_cast<Graph*>(&g)),
                           adjacency_iterator(l, const_cast<Graph*>(&g)));
   }
@@ -374,7 +389,7 @@ namespace boost {
     typename Graph::InEdgePred pred(g.m_edge_pred, g.m_vertex_pred, g);
     typedef typename Graph::in_edge_iterator iter;
     typename graph_traits<G>::in_edge_iterator f, l;
-    tie(f, l) = in_edges(u, g.m_g);
+    boost::tie(f, l) = in_edges(u, g.m_g);
     return std::make_pair(iter(pred, f, l), iter(pred, l, l));
   }
 
@@ -385,7 +400,7 @@ namespace boost {
   {
     typename filtered_graph<G, EP, VP>::degree_size_type n = 0;
     typename filtered_graph<G, EP, VP>::in_edge_iterator f, l;
-    for (tie(f, l) = in_edges(u, g); f != l; ++f)
+    for (boost::tie(f, l) = in_edges(u, g); f != l; ++f)
       ++n;
     return n;
   }
@@ -398,7 +413,7 @@ namespace boost {
   {
     typename graph_traits<G>::edge_descriptor e;
     bool exists;
-    tie(e, exists) = edge(u, v, g.m_g);
+    boost::tie(e, exists) = edge(u, v, g.m_g);
     return std::make_pair(e, exists && g.m_edge_pred(e));
   }
 
@@ -413,7 +428,7 @@ namespace boost {
     typename Graph::OutEdgePred pred(g.m_edge_pred, g.m_vertex_pred, g);
     typedef typename Graph::out_edge_iterator iter;
     typename graph_traits<G>::out_edge_iterator f, l;
-    tie(f, l) = edge_range(u, v, g.m_g);
+    boost::tie(f, l) = edge_range(u, v, g.m_g);
     return std::make_pair(iter(pred, f, l), iter(pred, l, l));
   }
 
