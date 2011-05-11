@@ -1,22 +1,42 @@
-# Copyright (C) 2008 Michael Jackson
-#
-# Use, modification and distribution is subject to the Boost Software
-# License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
-# http://www.boost.org/LICENSE_1_0.txt)
+# Distributed under the Boost Software License, Version 1.0.
+# See http://www.boost.org/LICENSE_1_0.txt
 
-#----------------------------------------------------------------------------
-# This file was automatically generated from the original CMakeLists.txt file
+cmake_minimum_required(VERSION 2.8)
 
-# Add a library target to the build system
-ryppl_library_project(
-  boost.graph
-  SRCDIRS  src 
-  TESTDIRS  test
-  #  DOCDIRS 
-  DESCRIPTION  "The BGL graph interface and graph components are generic, in the same sense as the the Standard Template Library (STL)."
-  AUTHORS  "Jeremy Siek <jeremy.siek -at- gmail.com>"
-           "Lie-Quan Lee"
-           "Andrew Lumsdaine"
-           "Douglas Gregor <doug.gregor -at- gmail.com>"
-  #  MAINTAINERS 
-  VERSION 1.41.0)
+find_package(Boost 1.45 NO_MODULE)
+include("${Boost_DEV_FILE}")
+
+boost_project(Graph
+  AUTHORS
+    "Jeremy Siek <jeremy.siek -at- gmail.com>"
+    "Lie-Quan Lee"
+    "Andrew Lumsdaine"
+    "Douglas Gregor <doug.gregor -at- gmail.com>"
+  DESCRIPTION
+    "The BGL graph interface and graph components are generic,"
+    "in the same sense as the the Standard Template Library (STL)."
+  DEPENDS
+    property_map
+    tuple
+    multi_index
+    any # because of the dependency on boost/property_map/dynamic_property_map.hpp
+    random
+    parameter
+    regex
+    mpi # optional
+  )
+
+if(MSVC)
+  add_definitions(/wd4005) # 'BOOST_GRAPH_SOURCE': macro redefinition
+endif(MSVC)
+
+file(GLOB_RECURSE headers include/boost/*.?pp)
+boost_add_headers(${headers} PREFIX "!include!!")
+
+boost_add_library(graph NO_SYMBOL
+  SOURCES
+    src/read_graphviz_new.cpp
+    src/graphml.cpp
+  LINK_BOOST_LIBRARIES
+    regex
+  )
