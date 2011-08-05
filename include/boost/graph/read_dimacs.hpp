@@ -281,7 +281,8 @@ int read_dimacs_max_flow_internal(Graph& g,
   std::printf ( "\nline %ld of input - %s\n",
                 no_lines, err_message[err_no] );
 
-  return -1;
+  std::exit (1);
+  return (0); /* to avoid warning */
 }
 /* --------------------   end of parser  -------------------*/
 
