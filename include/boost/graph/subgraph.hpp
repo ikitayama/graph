@@ -23,7 +23,6 @@
 #include <boost/iterator/indirect_iterator.hpp>
 
 #include <boost/static_assert.hpp>
-#include <boost/assert.hpp>
 #include <boost/type_traits/is_same.hpp>
 
 namespace boost {
@@ -666,7 +665,7 @@ remove_edge(typename subgraph<G>::edge_descriptor e, subgraph<G>& g)
     typename subgraph<G>::edge_descriptor e_global = g.local_to_global(e);
 #ifndef NDEBUG
     std::pair<typename subgraph<G>::edge_descriptor, bool> fe = g.find_edge(e_global);
-    BOOST_ASSERT(fe.second && fe.first == e);
+    assert(fe.second && fe.first == e);
 #endif //NDEBUG
     subgraph<G> &root = g.root(); // chase to root
     detail::children_remove_edge<G>(e_global, root.m_children);
