@@ -13,7 +13,6 @@ find_package(Boost
     config
     conversion
     core
-    detail
     disjoint_sets
     dynamic_bitset
     exception
