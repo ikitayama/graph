@@ -491,9 +491,10 @@ fi_adj_loop_k:++fi_adj.first;
 
   namespace graph {
     namespace detail {
-      template <typename Graph1, typename Graph2, typename ArgPack>
+      template <typename Graph1, typename Graph2>
       struct isomorphism_impl {
         typedef bool result_type;
+        template <typename ArgPack>
         bool operator()(const Graph1& g1, const Graph2& g2, const ArgPack& arg_pack) const {
           using namespace boost::graph::keywords;
           typedef typename boost::detail::override_const_property_result<ArgPack, tag::vertex_index1_map, boost::vertex_index_t, Graph1>::type index1_map_type;
@@ -531,23 +532,7 @@ fi_adj_loop_k:++fi_adj.first;
   }
 
   // Named parameter interface
-  template <typename Graph1, typename Graph2, class P, class T, class R>
-  bool isomorphism(const Graph1& g1,
-                   const Graph2& g2,
-                   const bgl_named_params<P,T,R>& params)
-  {
-    typedef bgl_named_params<P, T, R> params_type;
-    BOOST_GRAPH_DECLARE_CONVERTED_PARAMETERS(params_type, params)
-    return boost::graph::isomorphism_with_named_params(g1, g2, arg_pack);
-  }
-
-  template <typename Graph1, typename Graph2>
-  bool isomorphism(const Graph1& g1,
-                   const Graph2& g2)
-  {
-    BOOST_GRAPH_DECLARE_CONVERTED_PARAMETERS(no_named_parameters, no_named_parameters())
-    return boost::graph::isomorphism_with_named_params(g1, g2, arg_pack);
-  }
+  BOOST_GRAPH_MAKE_OLD_STYLE_PARAMETER_FUNCTION(isomorphism, 2)
 
   // Verify that the given mapping iso_map from the vertices of g1 to the
   // vertices of g2 describes an isomorphism.
