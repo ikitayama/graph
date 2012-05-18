@@ -41,9 +41,9 @@ ryppl_export(
     BoostGraphParallel
     BoostInteger
     BoostIterator
-    BoostMath
     BoostMPI
     BoostMPL
+    BoostMath
     BoostMultiIndex
     BoostOptional
     BoostParameter
@@ -52,11 +52,10 @@ ryppl_export(
     BoostPropertyTree
     BoostRange
     BoostSmartPtr
-    BoostSpirit
     BoostSpiritClassic
     BoostStaticAssert
-    BoostTest
     BoostTTI
+    BoostTest
     BoostTuple
     BoostTypeTraits
     BoostTypeof
