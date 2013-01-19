@@ -2,23 +2,31 @@
 # See http://www.boost.org/LICENSE_1_0.txt
 
 cmake_minimum_required(VERSION 2.8.8)
-project(BoostGraph CXX)
 
 include(Ryppl)
 
-ryppl_find_and_use_package(BoostPropertyMap)
-ryppl_find_and_use_package(BoostPropertyTree)
-ryppl_find_and_use_package(BoostSerialization)
-ryppl_find_and_use_package(BoostUtility)
+ryppl_project(BoostGraph
+  DEPENDS
+    BoostPropertyMap
+    BoostPropertyTree
+    BoostSerialization
+    BoostUtility
+    BoostRegex
+)
+
+if (${RYPPL_BoostGraph_VALID})
+
 
 add_library(boost_graph
   src/read_graphviz_new.cpp
   src/graphml.cpp
-  )
+)
 
 target_link_libraries(boost_graph
   boost_regex
-  )
+)
+
+endif()
 
 ryppl_export(
   TARGETS
